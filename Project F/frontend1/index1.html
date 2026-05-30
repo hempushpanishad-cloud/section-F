@@ -1,21 +1,51 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Interest Difference Calculator</title>
 </head>
 <body>
-    <h2>CI − SI Calculator</h2>
-    <form>
-        <label for="principal">Enter Principal Amount (P):</label><br>
-        <input type="number" id="principal" name="principal"><br><br>
 
-        <p>Rate of Interest (R): 10%</p>
-        <p>Time (T): 3 years</p>
+  <div class="container">
 
-        <p><b>Formulas:</b></p>
-        <p>Simple Interest (SI) = P × R × T / 100</p>
-        <p>Compound Interest (CI) = P × (1 + R/100)^T − P</p>
-        <p>Difference = CI − SI</p>
-    </form>
+    <div class="left">
+      <input type="text" id="name" placeholder="Enter name">
+      <button onclick="saveUser()">Save</button>
+    </div>
+
+    <div class="right">
+      <h3>Users</h3>
+      <div id="users"></div>
+    </div>
+
+  </div>
+
+  <script>
+    const API = "";
+
+    async function saveUser() {
+      const name = document.getElementById("name").value;
+
+      await fetch(API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name })
+      });
+
+      document.getElementById("name").value = "";
+      loadUsers();
+    }
+
+    async function loadUsers() {
+      const res = await fetch(API);
+      const users = await res.json();
+
+      document.getElementById("users").innerHTML =
+        users.map(u => `<p>${u.name}</p>`).join("");
+    }
+
+    loadUsers();
+  </script>
+
 </body>
 </html>
